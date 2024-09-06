@@ -1,9 +1,9 @@
 const greet = name => {
-  return `Hello, ${name}!`
+  return `Hey there, ${name}!`
 }
 
 const bye = name => {
-  return `Goodbye, ${name}!`
+  return `See you soon, ${name}!`
 }
 
 module.exports = { greet, bye }
