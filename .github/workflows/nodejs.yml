@@ -32,4 +32,4 @@ jobs:
         run: vercel pull --yes --environment=production --token=rHyh4AW3Gq0p7t9mJnq3T0fP
 
       - name: Vercel deploy
-        run: vercel deploy --prebuilt --prod --token=rHyh4AW3Gq0p7t9mJnq3T0fP
+        run: vercel deploy --prod --token=rHyh4AW3Gq0p7t9mJnq3T0fP
