@@ -1,5 +1,9 @@
 name: Node.js CI
 
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 on:
   push:
     branches: [ "master" ]  
@@ -16,27 +20,16 @@ jobs:
       - name: Run tests
         run: npm test
 
-  build:
+  deploy:
+    needs: test  
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install Vercel CLI
+        run: npm install -g vercel
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - name: Vercel pull
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Log in to Docker Hub
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          if [ -z "${DOCKER_USERNAME}" ] || [ -z "${DOCKER_PASSWORD}" ]; then
-            echo "Docker username or password not set"
-            exit 1
-          fi
-          echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-
-      - name: Build Docker image
-        run: docker build . --file Dockerfile --tag my-app:latest
-
-      - name: Push Docker image to Docker Hub
-        run: docker push my-app:latest
+      - name: Vercel deploy
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
