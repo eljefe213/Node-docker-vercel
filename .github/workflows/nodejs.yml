@@ -2,7 +2,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "master" ]  # Utilise "master" si c'est ta branche principale
+    branches: [ "master" ]  
   pull_request:
     branches: [ "master" ]
 
@@ -25,7 +25,15 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          if [ -z "${DOCKER_USERNAME}" ] || [ -z "${DOCKER_PASSWORD}" ]; then
+            echo "Docker username or password not set"
+            exit 1
+          fi
+          echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag my-app:latest
