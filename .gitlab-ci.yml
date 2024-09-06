@@ -1,0 +1,15 @@
+variables:
+  NODE_VERSION: "21"
+
+node-tests:
+  image: node:${NODE_VERSION}
+  
+  script:
+    - npm install
+    - npm test
+    - npm run lint
+  
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
