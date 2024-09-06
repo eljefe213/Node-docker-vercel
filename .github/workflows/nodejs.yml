@@ -1,8 +1,8 @@
 name: Node.js CI
 
-env:
-  VERCEL_ORG_ID: eljefe213s-projects
-  VERCEL_PROJECT_ID: node-docker-vercel
+#env:
+  #VERCEL_ORG_ID: eljefe213s-projects
+  #VERCEL_PROJECT_ID: node-docker-vercel
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
         run: npm install -g vercel
 
       - name: Vercel pull
-        run: vercel pull --yes --environment=production --token=x4hbrrYjJJrtjG1rUxEoFjuR
+        run: vercel pull --yes --environment=production --token=rHyh4AW3Gq0p7t9mJnq3T0fP
 
       - name: Vercel deploy
-        run: vercel deploy --prebuilt --prod --token=x4hbrrYjJJrtjG1rUxEoFjuR
+        run: vercel deploy --prebuilt --prod --token=rHyh4AW3Gq0p7t9mJnq3T0fP
